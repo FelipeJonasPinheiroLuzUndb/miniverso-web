@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title id="title">Ícone Miniverso</title>
+  <rect width="512" height="512" rx="112" fill="#111827"/>
+  <circle cx="256" cy="256" r="144" fill="none" stroke="#b8f04a" stroke-width="34"/>
+  <circle cx="256" cy="256" r="42" fill="#f5f3ee"/>
+  <path d="M110 256h292M256 110v292" stroke="#ff7452" stroke-width="22" stroke-linecap="round"/>
+</svg>
+

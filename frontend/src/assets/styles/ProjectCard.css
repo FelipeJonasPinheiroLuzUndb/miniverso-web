@@ -1,0 +1,39 @@
+.project-card {
+  min-height: 22rem;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border: 1px solid #343c4a;
+  border-radius: 1.5rem;
+  background: #171f2c;
+}
+
+.project-card:nth-child(2) {
+  background: #202c28;
+}
+
+.project-area {
+  color: #b8f04a;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-card h3 {
+  max-width: 14ch;
+  margin: 3rem 0 1rem;
+  font-size: clamp(1.8rem, 3.5vw, 3.5rem);
+  line-height: 1;
+}
+
+.project-card > p:not(.project-area) {
+  max-width: 34rem;
+  color: #adb6c5;
+  line-height: 1.6;
+}
+
+.project-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-weight: 700;
+}
+

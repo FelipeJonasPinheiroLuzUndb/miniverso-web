@@ -1,0 +1,98 @@
+.hero {
+  position: relative;
+  display: grid;
+  min-height: 100svh;
+  grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 0.8fr);
+  gap: 3rem;
+  align-items: center;
+  overflow: hidden;
+  padding: 8rem clamp(1.25rem, 8vw, 8rem) 5rem;
+  color: #fff;
+  background:
+    radial-gradient(circle at 78% 30%, rgb(184 240 74 / 16%), transparent 24rem),
+    #111827;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h1 {
+  max-width: 12ch;
+  margin: 0;
+  font-size: clamp(3.2rem, 8vw, 8.5rem);
+  line-height: 0.86;
+  letter-spacing: -0.065em;
+}
+
+.hero-description {
+  max-width: 38rem;
+  margin: 2rem 0;
+  color: #c7ced9;
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
+  line-height: 1.6;
+}
+
+.primary-action {
+  display: inline-block;
+  padding: 1rem 1.35rem;
+  border-radius: 999px;
+  color: #111827;
+  background: #b8f04a;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.hero-orbit {
+  position: relative;
+  width: min(38vw, 32rem);
+  aspect-ratio: 1;
+  margin: auto;
+}
+
+.orbit,
+.core {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.orbit {
+  border: 1px solid rgb(255 255 255 / 35%);
+}
+
+.orbit-one {
+  width: 100%;
+  height: 40%;
+  transform: translate(-50%, -50%) rotate(32deg);
+}
+
+.orbit-two {
+  width: 42%;
+  height: 100%;
+  transform: translate(-50%, -50%) rotate(32deg);
+}
+
+.core {
+  width: 34%;
+  aspect-ratio: 1;
+  background: #ff7452;
+  box-shadow: 0 0 7rem rgb(255 116 82 / 55%);
+}
+
+@media (max-width: 800px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-orbit {
+    position: absolute;
+    right: -8rem;
+    bottom: -5rem;
+    width: 22rem;
+    opacity: 0.45;
+  }
+}
+
