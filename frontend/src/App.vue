@@ -1,75 +1,81 @@
-<script setup>
-import HeroSection from './components/HeroSection.vue'
-import ProjectCard from './components/ProjectCard.vue'
-
-const projects = [
-  {
-    area: 'Saúde',
-    title: 'Neurorregulação imersiva',
-    description: 'Um espaço reservado para contar o desafio, a solução criada e o impacto alcançado.'
-  },
-  {
-    area: 'Treinamento',
-    title: 'Capacitação em realidade virtual',
-    description: 'Experiências seguras e envolventes para preparar profissionais para situações reais.'
-  }
-]
-</script>
-
 <template>
-  <header class="site-header">
-    <a class="brand" href="#inicio" aria-label="Miniverso — página inicial">MINIVERSO</a>
-    <nav aria-label="Navegação principal">
-      <a href="#essencia">Essência</a>
-      <a href="#projetos">Projetos</a>
-      <a class="login-link" href="#acesso">Entrar</a>
+  <!-- Cabeçalho com navegação global -->
+  <header>
+    <!-- Acessibilidade: aria-label descreve o propósito do menu para leitores de tela -->
+    <nav aria-label="Navegação Principal" class="navbar">
+      <div class="logo">
+        <router-link to="/" aria-label="Ir para a página inicial da Miniverso">
+          <strong>Miniverso VR</strong>
+        </router-link>
+      </div>
+      
+      <ul class="nav-links">
+        <li><router-link to="/">Portfólio</router-link></li>
+        <li><router-link to="/blog">Blog</router-link></li>
+        <li><router-link to="/login">Acesso Restrito</router-link></li>
+      </ul>
     </nav>
   </header>
 
+  <!-- Ponto de injeção das páginas: Aqui entra o Home.vue, Blog.vue, etc. -->
   <main id="conteudo-principal">
-    <HeroSection />
-
-    <section id="essencia" class="content-section intro-section" aria-labelledby="essencia-title">
-      <p class="eyebrow">O que nos move</p>
-      <h2 id="essencia-title">Tecnologia que aproxima pessoas de novas possibilidades.</h2>
-      <p>
-        A Miniverso transforma desafios de saúde e treinamento em experiências imersivas,
-        intuitivas e construídas para gerar impacto no mundo real.
-      </p>
-    </section>
-
-    <section id="projetos" class="content-section projects-section" aria-labelledby="projects-title">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Portfólio</p>
-          <h2 id="projects-title">Desafios que viraram experiências.</h2>
-        </div>
-        <p>Os conteúdos abaixo são exemplos temporários para estruturar a apresentação dos futuros projetos.</p>
-      </div>
-
-      <div class="project-grid">
-        <ProjectCard
-          v-for="project in projects"
-          :key="project.title"
-          :area="project.area"
-          :title="project.title"
-          :description="project.description"
-        />
-      </div>
-    </section>
-
-    <section id="acesso" class="content-section access-section" aria-labelledby="access-title">
-      <p class="eyebrow">Área restrita</p>
-      <h2 id="access-title">Gestão dos projetos Miniverso.</h2>
-      <p>O login e o dashboard serão desenvolvidos em uma próxima etapa.</p>
-      <button type="button" disabled aria-describedby="access-note">Acesso em breve</button>
-      <small id="access-note">Funcionalidade ainda não disponível nesta versão.</small>
-    </section>
+    <router-view />
   </main>
 
+  <!-- Rodapé global -->
   <footer>
-    <p>Miniverso — experiências imersivas.</p>
-    <a href="#inicio">Voltar ao início <span aria-hidden="true">↑</span></a>
+    <p>&copy; 2026 Miniverso - Soluções em Realidade Virtual.</p>
   </footer>
 </template>
 
+<script setup>
+// Como o foco agora são as rotas e a estrutura, não precisamos de lógica JavaScript complexa aqui.
+// Quando o sistema de login estiver pronto, podemos adicionar aqui uma verificação se o usuário está autenticado para mudar o menu.
+</script>
+
+<style scoped>
+/* CSS estrutural básico apenas para os elementos não ficarem amontoados. 
+   O refinamento de design inspirado na Melted será feito depois. */
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+/* O Vue Router adiciona essa classe automaticamente no link da página que o usuário está acessando */
+.nav-links a.router-link-active {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+#conteudo-principal {
+  padding: 2rem;
+  min-height: 75vh; /* Garante que o rodapé fique no fim da tela se a página tiver pouco conteúdo */
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #222;
+  color: #fff;
+  font-size: 0.9rem;
+}
+</style>
