@@ -1,21 +1,11 @@
 <template>
-  <main id="conteudo-principal">
-    
-    <!-- 1. Hero / Showreel (Primeira dobra de impacto) -->
-    <section aria-labelledby="hero-title" class="hero">
-      <div class="hero-content">
-        <h1 id="hero-title">Miniverso VR</h1>
-        <p class="hero-subtitle">Expandindo os limites da sua realidade.</p>
-        <!-- Espaço para um futuro vídeo de background estilo Melted -->
-        <div class="video-placeholder" aria-hidden="true">
-          [ Showreel de Projetos VR rodando em loop ]
-        </div>
-      </div>
-    </section>
+  <div class="home-page">
+    <ImmersiveIntro />
 
     <!-- 2. Manifesto / Essência -->
-    <section aria-labelledby="manifesto-title" class="manifesto">
-      <h2 id="manifesto-title" class="sr-only">Nosso Manifesto</h2>
+    <section id="sobre" aria-labelledby="manifesto-title" class="manifesto">
+      <p class="eyebrow">Além da tela / Sobre a Miniverso</p>
+      <h2 id="manifesto-title">Pequeno no nome.<br /><span>Imenso nas possibilidades.</span></h2>
       <blockquote>
         "Nós não criamos apenas ambientes 3D. Nós construímos novas formas de 
         interagir, aprender e fazer negócios em um mundo onde a tela plana já não é suficiente."
@@ -49,10 +39,10 @@
     </section>
 
     <!-- 5. Portfólio / Selected Works -->
-    <section aria-labelledby="portfolio-title" class="portfolio">
+    <section id="portfolio" tabindex="-1" aria-labelledby="portfolio-title" class="portfolio">
       <div class="portfolio-header">
-        <h2 id="portfolio-title">Projetos em Destaque</h2>
-        <a href="#portfolio" class="ver-todos">Ver projetos</a>
+        <div><p class="eyebrow">Mundos que criamos / Portfólio</p><h2 id="portfolio-title">Ideias que saíram<br />da imaginação.</h2></div>
+        <a href="https://miniversotech.base44.app/#projetos" target="_blank" rel="noopener noreferrer" class="ver-todos">Portfólio completo <span aria-hidden="true">↗</span><span class="sr-only"> (abre em outra aba)</span></a>
       </div>
       
       <p v-if="projetos.length === 0" class="empty-state">
@@ -61,11 +51,13 @@
 
       <div class="portfolio-grid" v-else>
         <article v-for="projeto in projetos" :key="projeto.id" class="projeto-card">
-          <img :src="projeto.url_imagem" :alt="'Cena do projeto ' + projeto.titulo" loading="lazy" />
-          <div class="projeto-info">
+          <a :href="projeto.url" target="_blank" rel="noopener noreferrer" :aria-label="'Conhecer ' + projeto.titulo + ' no site atual da Miniverso (abre em outra aba)'">
+          <img :src="projeto.url_imagem" :alt="'Cena do projeto ' + projeto.titulo" width="960" height="540" loading="lazy" />
+          <div class="projeto-info"><span class="project-category">{{ projeto.categoria }}</span>
             <h3>{{ projeto.titulo }}</h3>
-            <p>{{ projeto.categoria }}</p>
+            <p>{{ projeto.descricao }}</p><span class="project-link">Explorar projeto <span aria-hidden="true">↗</span></span>
           </div>
+          </a>
         </article>
       </div>
     </section>
@@ -101,17 +93,24 @@
     <!-- 8. Call to Action / Contato -->
     <section id="contato" aria-labelledby="cta-title" class="cta">
       <h2 id="cta-title">Vamos construir o próximo universo juntos?</h2>
-      <p class="cta-note">Estamos preparando nosso canal de contato.</p>
+      <p class="cta-note">Sua ideia merece um mundo próprio. Vamos conversar?</p>
+      <a class="btn-contato" href="mailto:contato@meuminiverso.com">Conte sua ideia <span aria-hidden="true">↗</span></a>
     </section>
 
-  </main>
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import ImmersiveIntro from '../components/ImmersiveIntro.vue';
 
 // Estado reativo: Projetos
-const projetos = ref([]);
+// Conteúdo e imagens da seleção pública da Miniverso. Detalhes permanecem no site atual.
+const projetos = ref([
+  { id: 'avati', titulo: 'Avati: Do zero a um milhão', categoria: '01 / Gamificação & ativação de marca', descricao: 'Uma trilha interativa em xilogravura.', url_imagem: '/images/avati.png', url: 'https://miniversotech.base44.app/projeto?id=avati-do-zero-a-um-milhao' },
+  { id: 'aliados', titulo: 'Aliados do Sucesso: Desafio SEBRAETEC', categoria: '02 / Realidade virtual', descricao: 'O “Show do Milhão” Empreendedor.', url_imagem: '/images/aliados.png', url: 'https://miniversotech.base44.app/projeto?id=aliados-do-sucesso-sebraetec' },
+  { id: 'reciclaverso', titulo: 'Reciclaverso', categoria: '03 / Realidade virtual & sustentabilidade', descricao: 'Uma imersão ecológica em um game show interativo e educativo.', url_imagem: '/images/reciclaverso.png', url: 'https://miniversotech.base44.app/projeto?id=reciclaverso' }
+]);
 
 // Estado reativo: Serviços (Expertise)
 const servicos = ref([
@@ -137,181 +136,56 @@ const clientes = ref([]);
 </script>
 
 <style scoped>
-/* Estrutura mínima de espaçamento. A classe sr-only oculta o texto visualmente para seguir o design da Melted, mas o mantém para leitores de tela (acessibilidade) */
-
-section {
-  padding: 4rem 0;
-  border-bottom: 1px solid #eaeaea;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.hero {
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.video-placeholder {
-  margin-top: 2rem;
-  height: 400px;
-  background-color: #333;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 8px;
-}
-
-.manifesto blockquote {
-  font-size: 2rem;
-  line-height: 1.4;
-  font-weight: bold;
-  max-width: 900px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.section-heading {
-  display: grid;
-  grid-template-columns: minmax(180px, 0.7fr) minmax(0, 1.3fr);
-  gap: 2rem;
-  align-items: end;
-}
-
-.eyebrow {
-  margin: 0;
-  color: #ff7452;
-  font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.impacto-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  margin-top: 4rem;
-}
-
-.impacto-item,
-.processo-lista li {
-  padding: 1.5rem 0;
-  border-top: 1px solid #c9c4bb;
-}
-
-.item-number {
-  display: block;
-  margin-bottom: 2rem;
-  color: #ff7452;
-  font-size: 0.8rem;
-  font-weight: 800;
-}
-
-.impacto-item h3,
-.processo-lista h3 {
-  margin: 0;
-  font-size: 1.35rem;
-}
-
-.impacto-item p,
-.processo-lista p {
-  margin: 0.75rem 0 0;
-  color: #536070;
-  line-height: 1.6;
-}
-
-.processo-lista {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  padding: 0;
-  margin: 4rem 0 0;
-  list-style: none;
-}
-
-.processo-lista li {
-  display: flex;
-  flex-direction: column;
-}
-
-.expertise-grid, .portfolio-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  margin-top: 2rem;
-}
-
-.projeto-card img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-}
-
-.empty-state {
-  max-width: 38rem;
-  margin: 2rem 0 0;
-  color: #536070;
-  line-height: 1.6;
-}
-
-.clientes-logos {
-  display: flex;
-  gap: 2rem;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  margin-top: 2rem;
-}
-
-.logo-placeholder {
-  padding: 1rem 2rem;
-  background: #f4f4f4;
-  border-radius: 4px;
-  font-weight: bold;
-  color: #666;
-}
-
-.cta {
-  text-align: center;
-  padding: 6rem 0;
-  border-bottom: none;
-}
-
-.btn-contato {
-  display: inline-block;
-  margin-top: 2rem;
-  padding: 1rem 3rem;
-  font-size: 1.2rem;
-  background-color: #000;
-  color: #fff;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-.cta-note {
-  margin: 1.5rem auto 0;
-  color: #536070;
-}
-
-@media (max-width: 700px) {
-  .section-heading,
-  .impacto-grid,
-  .processo-lista {
-    grid-template-columns: 1fr;
-  }
+.home-page { background: #211747; color: #f3f4fa; overflow-x: clip; }
+.home-page > section { padding: clamp(70px,9vw,140px) 8%; border-bottom: 1px solid #8f87aa33; scroll-margin-top: 24px; }
+.home-page > .immersive-intro { padding: 0; border: 0; }
+h2 { margin: 0; font-size: clamp(35px,5.2vw,78px); font-weight: 400; line-height: 1.04; letter-spacing: -.055em; max-width: 22ch; }
+h2 span { color: #a89bc5; }
+.eyebrow { color: #82deef; margin: 0 0 32px; font: 10px/1.5 var(--font-mono); letter-spacing: .12em; text-transform: uppercase; }
+.manifesto blockquote { max-width: 650px; margin: 52px 0 0 auto; color: #beb4d4; font-size: clamp(18px,2vw,27px); font-weight: 400; line-height: 1.6; letter-spacing: -.02em; }
+.section-heading { display: grid; grid-template-columns: minmax(170px,.65fr) minmax(0,1.35fr); gap: 3rem; align-items: start; }
+.section-heading .eyebrow { margin-top: 10px; }
+.impacto-grid, .processo-lista { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 36px; margin-top: 64px; }
+.impacto-item, .processo-lista li { padding: 26px 0; border-top: 1px solid #8f87aa55; }
+.item-number { display: block; color: #82deef; font: 11px var(--font-mono); margin-bottom: 42px; }
+.impacto-item h3, .processo-lista h3, .expertise-card h3 { margin: 0; font-size: 22px; font-weight: 400; line-height: 1.2; letter-spacing: -.025em; }
+.impacto-item p, .processo-lista p, .expertise-card p { margin: 18px 0 0; color: #beb4d4; font-size: 14px; line-height: 1.7; }
+.expertise { background: #1b123b; }
+.expertise-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 36px; margin-top: 60px; }
+.expertise-card { padding-top: 26px; border-top: 1px solid #8f87aa55; }
+.portfolio { background: #0a0b16; }
+.portfolio-header { display: flex; justify-content: space-between; align-items: end; gap: 30px; }
+.ver-todos { font-size: 12px; text-underline-offset: 7px; white-space: nowrap; padding: 12px 0; }
+.ver-todos > span:first-child { margin-left: 16px; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 56px 28px; margin-top: 64px; }
+.projeto-card:last-child { grid-column: 1 / -1; width: calc(50% - 14px); }
+.projeto-card a { display: block; text-decoration: none; }
+.projeto-card img { display: block; width: 100%; aspect-ratio: 16/9; height: auto; object-fit: cover; border: 1px solid #ffffff1f; transition: transform .35s; }
+.projeto-card a:hover img { transform: translateY(-5px); }
+.projeto-info { padding-top: 24px; }
+.project-category { color: #82deef; font: 9px/1.6 var(--font-mono); text-transform: uppercase; letter-spacing: .07em; }
+.projeto-info h3 { margin: 12px 0; font-size: clamp(21px,2.4vw,34px); font-weight: 400; line-height: 1.15; letter-spacing: -.035em; }
+.projeto-info p { color: #a4a5ba; font-size: 13px; line-height: 1.65; }
+.project-link { display: inline-flex; gap: 28px; align-items: center; min-height: 44px; font-size: 11px; color: #d9daea; border-bottom: 1px solid #9d99b260; }
+.processo-lista { list-style: none; padding: 0; }
+.clientes h2 { font-size: clamp(30px,4vw,54px); }
+.empty-state { color: #beb4d4; margin: 30px 0 0; font-size: 14px; line-height: 1.7; max-width: 40rem; }
+.clientes-logos { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 36px; }
+.cta { text-align: center; }
+.cta h2 { margin-inline: auto; max-width: 18ch; }
+.cta-note { color: #beb4d4; font-size: 14px; line-height: 1.6; margin: 30px 0; }
+.btn-contato { display: inline-flex; gap: 55px; align-items: center; padding: 18px 28px; color: #101020; background: #8ee0ec; text-decoration: none; border-radius: 40px; font-size: 14px; min-height: 48px; }
+@media(max-width:700px) {
+ .home-page > section { padding: 72px 6%; }
+ .home-page > .immersive-intro { padding: 0; }
+ .section-heading, .impacto-grid, .processo-lista, .expertise-grid, .portfolio-grid { grid-template-columns: minmax(0,1fr); }
+ .section-heading { gap: 16px; }
+ .section-heading .eyebrow { margin-bottom: 0; }
+ .impacto-grid, .processo-lista, .expertise-grid { gap: 16px; margin-top: 40px; }
+ .item-number { margin-bottom: 24px; }
+ .manifesto blockquote { margin-top: 32px; }
+ .portfolio-header { align-items: start; flex-direction: column; }
+ .portfolio-grid { gap: 44px; margin-top: 40px; }
+ .projeto-card:last-child { grid-column: auto; width: 100%; }
 }
 </style>
