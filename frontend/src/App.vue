@@ -1,81 +1,76 @@
 <template>
-  <!-- Cabeçalho com navegação global -->
-  <header>
-    <!-- Acessibilidade: aria-label descreve o propósito do menu para leitores de tela -->
-    <nav aria-label="Navegação Principal" class="navbar">
-      <div class="logo">
-        <router-link to="/" aria-label="Ir para a página inicial da Miniverso">
-          <strong>Miniverso VR</strong>
-        </router-link>
-      </div>
-      
-      <ul class="nav-links">
-        <li><router-link to="/">Portfólio</router-link></li>
-        <li><router-link to="/blog">Blog</router-link></li>
-        <li><router-link to="/login">Acesso Restrito</router-link></li>
-      </ul>
-    </nav>
-  </header>
-
-  <!-- Ponto de injeção das páginas: Aqui entra o Home.vue, Blog.vue, etc. -->
-  <main id="conteudo-principal">
-    <router-view />
-  </main>
-
-  <!-- Rodapé global -->
-  <footer>
-    <p>&copy; 2026 Miniverso - Soluções em Realidade Virtual.</p>
-  </footer>
+  <div class="app-shell" :class="{ 'immersive-shell': isHome }">
+    <header class="app-header">
+      <nav aria-label="Navegação principal" class="navbar">
+        <router-link class="brand" to="/" aria-label="Miniverso — início" @click="menuOpen = false"><img src="/images/miniverso-logo.png" alt="Miniverso" width="1024" height="236" /></router-link>
+        <button class="menu-button" type="button" :aria-expanded="menuOpen" aria-controls="navigation-links" @click="menuOpen = !menuOpen">{{ menuOpen ? 'Fechar' : 'Menu' }}</button>
+        <ul id="navigation-links" class="nav-links" :class="{ 'menu-open': menuOpen }">
+          <li><router-link :to="{ path: '/', hash: '#sobre' }" @click="menuOpen = false">O estúdio</router-link></li>
+          <li><router-link :to="{ path: '/', hash: '#portfolio' }" @click="menuOpen = false">Projetos</router-link></li>
+          <li><router-link to="/blog" @click="menuOpen = false">Blog</router-link></li>
+          <li><router-link class="restricted-link" to="/login" @click="menuOpen = false">Acesso restrito</router-link></li>
+        </ul>
+        <router-link class="header-contact" :to="{ path: '/', hash: '#contato' }">Vamos conversar <span aria-hidden="true">↗</span></router-link>
+      </nav>
+    </header>
+    <main id="conteudo-principal" tabindex="-1"><router-view /></main>
+    <footer class="app-footer"><router-link to="/" aria-label="Miniverso — início"><img src="/images/miniverso-logo.png" alt="Miniverso" width="1024" height="236" /></router-link><p>Experiências que levam ideias além da tela.</p><span>© 2026 Miniverso</span></footer>
+  </div>
 </template>
 
 <script setup>
-// Como o foco agora são as rotas e a estrutura, não precisamos de lógica JavaScript complexa aqui.
-// Quando o sistema de login estiver pronto, podemos adicionar aqui uma verificação se o usuário está autenticado para mudar o menu.
+import { computed, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
+const route = useRoute();
+const isHome = computed(() => route.name === 'Home');
+const menuOpen = ref(false);
+watch(() => route.fullPath, () => { menuOpen.value = false; });
 </script>
 
-<style scoped>
-/* CSS estrutural básico apenas para os elementos não ficarem amontoados. 
-   O refinamento de design inspirado na Melted será feito depois. */
-
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #f9f9f9;
-  border-bottom: 1px solid #e0e0e0;
+<style>
+:root { --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; font-family: 'Segoe UI', Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; }
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 0; }
+button, input, textarea { font: inherit; }
+a { color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+:focus-visible { outline: 2px solid #7cdeef; outline-offset: 6px; }
+.app-shell { background: #f5f3ee; color: #152033; }
+.immersive-shell { background: #211747; color: #f3f4fa; }
+.skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 12px 18px; color: #060710; background: #8fe1ee; transform: translateY(-180%); }
+.skip-link:focus { transform: translateY(0); }
+.app-header { position: relative; z-index: 20; background: #0a0b16; color: #e9eaf3; }
+.immersive-shell .app-header { position: absolute; top: 0; left: 0; right: 0; background: transparent; }
+.navbar { height: 102px; margin: 0 5%; display: flex; justify-content: space-between; align-items: center; gap: 28px; border-bottom: 1px solid #9d99b22b; }
+.brand { display: inline-flex; align-items: center; min-height: 44px; }
+.brand img { display: block; width: 145px; height: auto; }
+.nav-links { display: flex; align-items: center; gap: 30px; list-style: none; margin: 0; padding: 0; }
+.nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; text-decoration: none; color: #bbbdd0; transition: color .2s; }
+.nav-links a:hover, .nav-links a.router-link-exact-active:not([href*='#']) { color: #fff; }
+.restricted-link { font: 10px var(--font-mono); }
+.header-contact { font-size: 12px; display: inline-flex; align-items: center; justify-content: space-between; gap: 26px; padding: 13px 22px; color: #111223; background: #f3f4fa; border-radius: 40px; text-decoration: none; min-height: 44px; }
+.menu-button { display: none; }
+#conteudo-principal { min-height: 75vh; outline: none; }
+.app-shell:not(.immersive-shell) #conteudo-principal { padding: clamp(24px, 5vw, 70px); }
+.app-footer { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 40px 5%; color: #9a9eb4; background: #0a0b16; font-size: 11px; }
+.app-footer img { width: 135px; height: auto; display: block; }
+.app-footer span { font: 10px var(--font-mono); }
+@media(max-width: 850px) {
+  .navbar { height: 84px; gap: 16px; }
+  .brand img { width: 125px; }
+  .nav-links { gap: 16px; }
+  .header-contact { padding: 12px 16px; gap: 12px; }
 }
-
-.nav-links {
-  display: flex;
-  gap: 1.5rem;
-  list-style: none;
-  margin: 0;
-  padding: 0;
+@media(max-width: 700px) {
+  .navbar { height: 78px; margin-inline: 6%; }
+  .brand img { width: 118px; }
+  .menu-button { display: block; margin-left: auto; border: 1px solid #9d99b260; border-radius: 30px; background: transparent; color: #e9eaf3; padding: 10px 17px; min-height: 44px; font-size: 11px; cursor: pointer; }
+  .header-contact { display: none; }
+  .nav-links { display: none; position: absolute; top: 78px; left: 0; right: 0; padding: 22px 6%; background: #121022; border-bottom: 1px solid #756397; }
+  .nav-links.menu-open { display: flex; align-items: start; flex-direction: column; gap: 4px; }
+  .nav-links a { font-size: 14px; min-height: 46px; }
+  .app-footer { align-items: start; flex-direction: column; padding: 36px 6%; gap: 18px; }
+  .app-footer p { margin: 0; }
 }
-
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
-
-/* O Vue Router adiciona essa classe automaticamente no link da página que o usuário está acessando */
-.nav-links a.router-link-active {
-  color: #0056b3;
-  text-decoration: underline;
-}
-
-#conteudo-principal {
-  padding: 2rem;
-  min-height: 75vh; /* Garante que o rodapé fique no fim da tela se a página tiver pouco conteúdo */
-}
-
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  background-color: #222;
-  color: #fff;
-  font-size: 0.9rem;
-}
+@media(prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation: none !important; } }
 </style>

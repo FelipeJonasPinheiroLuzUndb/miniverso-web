@@ -32,7 +32,12 @@ const routes = [
 const router = createRouter({
   // O createWebHistory garante que a URL fique limpa (ex: /blog) sem aquele "#" antigo
   history: createWebHistory(),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) return { el: to.hash, top: 24, behavior: 'auto' };
+    return { top: 0 };
+  }
 });
 
 export default router;
