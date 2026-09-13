@@ -203,6 +203,17 @@ footer a {
   }
 }
 
+@media (max-width: 900px) {
+  .content-section {
+    padding-inline: 6%;
+  }
+
+  .section-heading {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

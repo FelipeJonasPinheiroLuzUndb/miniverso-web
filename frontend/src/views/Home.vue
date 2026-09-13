@@ -188,4 +188,11 @@ h2 span { color: #a89bc5; }
  .portfolio-grid { gap: 44px; margin-top: 40px; }
  .projeto-card:last-child { grid-column: auto; width: 100%; }
 }
+@media(min-width:701px) and (max-width:1000px) {
+ .home-page > section { padding-inline: 6%; }
+ .section-heading { grid-template-columns: 1fr; gap: 16px; }
+ .impacto-grid, .processo-lista, .expertise-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
+ .portfolio-grid { gap: 40px 20px; }
+ .projeto-card:last-child { width: calc(50% - 10px); }
+}
 </style>
