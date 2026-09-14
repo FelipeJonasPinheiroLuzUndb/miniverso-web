@@ -38,13 +38,14 @@ a { color: inherit; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 :focus-visible { outline: 2px solid #7cdeef; outline-offset: 6px; }
 .app-shell { background: #f5f3ee; color: #152033; }
-.immersive-shell { background: #211747; color: #f3f4fa; }
+.immersive-shell { background: #07131f; color: #eef7ff; }
 .skip-link { position: fixed; z-index: 100; top: 12px; left: 12px; padding: 12px 18px; color: #060710; background: #8fe1ee; transform: translateY(-180%); }
 .skip-link:focus { transform: translateY(0); }
 .app-header { position: relative; z-index: 20; background: #0a0b16; color: #e9eaf3; }
 .immersive-shell .app-header { position: absolute; top: 0; left: 0; right: 0; background: transparent; }
 .navbar { height: 102px; margin: 0 5%; display: flex; justify-content: space-between; align-items: center; gap: 28px; border-bottom: 1px solid #9d99b22b; }
 .brand { display: inline-flex; align-items: center; min-height: 44px; }
+.navbar .brand, .navbar .nav-links a { display: inline-flex; }
 .brand img { display: block; width: 145px; height: auto; }
 .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; margin: 0; padding: 0; }
 .nav-links a { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; text-decoration: none; color: #bbbdd0; transition: color .2s; }

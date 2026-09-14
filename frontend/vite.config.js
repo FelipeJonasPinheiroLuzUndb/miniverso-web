@@ -13,7 +13,7 @@ export default defineConfig({
         short_name: 'Miniverso',
         description: 'Experiências imersivas para transformar desafios reais.',
         theme_color: '#0a0b16',
-        background_color: '#211747',
+        background_color: '#07131f',
         display: 'standalone',
         start_url: '/',
         id: '/',
@@ -26,7 +26,7 @@ export default defineConfig({
         ]
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
+        globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2,glb}'],
         navigateFallback: 'index.html',
         navigateFallbackDenylist: [/^\/api(?:\/|$)/],
         cleanupOutdatedCaches: true

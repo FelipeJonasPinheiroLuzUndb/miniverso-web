@@ -37,7 +37,7 @@ async function verify() {
       assert((await page.locator('main').innerText()).trim().length > 0);
     }
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth));
-    const output = path.join(__dirname, '../docs/pwa-evidence');
+    const output = process.argv[4] ? path.resolve(process.argv[4]) : path.join(__dirname, '../docs/pwa-evidence');
     await mkdir(output, { recursive: true });
     await page.screenshot({ path: path.join(output, 'mobile-offline.png') });
     await context.setOffline(false);
