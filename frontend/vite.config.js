@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [
     vue(),
     VitePWA({
-      registerType: 'autoUpdate',
-      includeAssets: ['miniverso-icon.svg'],
+      registerType: 'prompt',
+      includeAssets: ['miniverso-icon.svg', 'icons/*.png'],
       manifest: {
         name: 'Miniverso',
         short_name: 'Miniverso',
@@ -16,19 +16,20 @@ export default defineConfig({
         background_color: '#211747',
         display: 'standalone',
         start_url: '/',
+        id: '/',
+        scope: '/',
         lang: 'pt-BR',
         icons: [
-          {
-            src: '/miniverso-icon.svg',
-            sizes: 'any',
-            type: 'image/svg+xml',
-            purpose: 'any maskable'
-          }
+          { src: '/icons/pwa-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+          { src: '/icons/pwa-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },
+          { src: '/icons/pwa-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' }
         ]
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,webp,woff2}'],
-        navigateFallback: 'index.html'
+        navigateFallback: 'index.html',
+        navigateFallbackDenylist: [/^\/api(?:\/|$)/],
+        cleanupOutdatedCaches: true
       }
     })
   ],

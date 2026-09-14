@@ -14,6 +14,7 @@
       </nav>
     </header>
     <main id="conteudo-principal" tabindex="-1"><router-view /></main>
+    <PwaStatus />
     <footer class="app-footer"><router-link to="/" aria-label="Miniverso — início"><img src="/images/miniverso-logo.png" alt="Miniverso" width="1024" height="236" /></router-link><p>Experiências que levam ideias além da tela.</p><span>© 2026 Miniverso</span></footer>
   </div>
 </template>
@@ -21,6 +22,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
+import PwaStatus from './components/PwaStatus.vue';
 const route = useRoute();
 const isHome = computed(() => route.name === 'Home');
 const menuOpen = ref(false);
