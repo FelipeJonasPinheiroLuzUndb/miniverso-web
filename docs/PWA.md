@@ -39,3 +39,4 @@ Configuração em `frontend/vite.config.js`, interface em `frontend/src/componen
 - Abertura das telas provisórias de login/dashboard não comprova autenticação nem operações offline.
 - Ainda não testados: instalação em dispositivo físico e atualização entre duas versões publicadas.
 - Registro e envio desta etapa destinados à branch compartilhada `dev`. O envio ao GitHub não comprova um deploy nem substitui os testes em dispositivo físico.
+- Integração com `origin/dev` incluindo os ajustes de responsividade e preparação de hospedagem do Murilo: preservados os estilos remotos e adicionados os avisos/configuração PWA. Compilação, quatro testes e verificação offline repetidos com sucesso após a integração.

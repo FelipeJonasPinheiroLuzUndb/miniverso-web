@@ -200,7 +200,7 @@ onUnmounted(() => {
   .intro-controls { gap: 16px; }
   .scroll-invitation { gap: 10px; }
   .reveal-signature { width: 78vw; gap: 20px; top: 43%; }
-  .reveal-eyebrow { font-size: 8px; letter-spacing: .08em; }
+  .reveal-eyebrow { max-width: 90vw; font-size: 8px; letter-spacing: .08em; white-space: normal; text-align: center; }
   .reveal-caption { font-size: 12px; }
   .fragment { width: 43vw; }
   .fragment-left { top: 64%; left: -8%; }
@@ -208,6 +208,16 @@ onUnmounted(() => {
   .fragment figcaption { font-size: 8px; margin-top: 10px; }
   .fragment figcaption span { display: none; }
   .motion-reduced { height: auto; }
+}
+@media (max-width: 380px) {
+  .intro-topline { top: 16%; }
+  .split-name { font-size: 18vw; gap: calc(13vw * var(--name-gap)); }
+  .headset { width: 62vw; }
+  .intro-description { bottom: 21%; }
+  .intro-description p { font-size: 26px; }
+  .intro-bottomline { font-size: 8px; }
+  .intro-controls { width: 100%; justify-content: space-between; gap: 8px; }
+  .reveal-signature { width: 84vw; }
 }
 @media (max-height: 640px) and (min-width: 701px) {
   .intro-stage { min-height: 460px; }
