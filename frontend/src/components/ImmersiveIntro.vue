@@ -219,7 +219,7 @@ onUnmounted(() => {
 .intro-controls { display: flex; align-items: center; gap: 22px; }
 .intro-controls button { cursor: pointer; color: #c4c7d6; background: transparent; border: 0; font: inherit; padding: 12px 0; min-height: 44px; }
 .intro-controls a { padding: 12px 0; min-height: 44px; text-underline-offset: 5px; }
-.world-entered .intro-bottomline { bottom: 100px; }
+.world-entered .intro-bottomline { bottom: 30px; }
 .motion-reduced { height: auto; }
 .motion-reduced .intro-stage { position: relative; }
 .motion-reduced .project-fragments { display: none; }
@@ -237,6 +237,7 @@ onUnmounted(() => {
   .intro-description p { font-size: 30px; }
   .intro-description > span { font-size: 11px; }
   .intro-bottomline { left: 6%; right: 6%; bottom: 16px; flex-wrap: wrap; gap: 2px 12px; padding-top: 10px; font-size: 9px; }
+  .world-entered .intro-bottomline { bottom: 16px; }
   .intro-index { display: none; }
   .intro-controls { gap: 16px; }
   .scroll-invitation { gap: 10px; }
@@ -249,6 +250,19 @@ onUnmounted(() => {
   .fragment figcaption { font-size: 8px; margin-top: 10px; }
   .fragment figcaption span { display: none; }
   .motion-reduced { height: auto; }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .brand-handoff { width: clamp(210px,27vw,280px); }
+  .vr-world-preview { width: min(760px,82%); }
+}
+@media (min-width: 701px) and (max-height: 900px) {
+  .brand-handoff { width: clamp(220px,28vw,360px); }
+  .vr-world-preview { top: 54%; width: min(760px,78%); }
+  .world-eyebrow { margin-bottom: clamp(12px,2vh,22px); }
+  .vr-world-preview h2 { font-size: clamp(48px,min(6vw,10.5vh),78px); line-height: .98; }
+  .world-description { margin: clamp(14px,2.2vh,22px) auto; font-size: 13px; line-height: 1.55; }
+  .world-link { gap: 36px; min-height: 44px; padding: 12px 22px; }
+  .world-entered .intro-bottomline { bottom: 18px; }
 }
 @media (max-width: 380px) {
   .intro-topline { top: 16%; }
@@ -267,6 +281,7 @@ onUnmounted(() => {
   .intro-description { bottom: 18%; }
   .intro-description p { font-size: 28px; }
   .intro-bottomline { bottom: 12px; padding-top: 8px; }
+  .world-entered .intro-bottomline { bottom: 10px; }
 }
 @media (max-height: 600px) and (max-width: 700px) {
   .intro-stage { min-height: 0; }

@@ -1,5 +1,5 @@
 <template>
-  <div class="app-shell" :class="{ 'immersive-shell': isHome }">
+  <div class="app-shell" :class="{ 'immersive-shell': isHome, 'admin-shell': isDashboard, 'portal-shell': isLogin }">
     <header class="app-header">
       <nav aria-label="Navegação principal" class="navbar">
         <router-link class="brand" to="/" aria-label="Miniverso — início" @click="menuOpen = false"><img src="/images/miniverso-logo.png" alt="Miniverso" width="1024" height="236" /></router-link>
@@ -25,12 +25,14 @@ import { useRoute } from 'vue-router';
 import PwaStatus from './components/PwaStatus.vue';
 const route = useRoute();
 const isHome = computed(() => route.name === 'Home');
+const isDashboard = computed(() => route.name === 'Dashboard');
+const isLogin = computed(() => route.name === 'Login');
 const menuOpen = ref(false);
 watch(() => route.fullPath, () => { menuOpen.value = false; });
 </script>
 
 <style>
-:root { --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; font-family: 'Segoe UI', Arial, sans-serif; font-synthesis: none; text-rendering: optimizeLegibility; }
+:root { --font-display: 'Space Grotesk', 'Avenir Next', 'Segoe UI', sans-serif; --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace; font-family: var(--font-display); font-synthesis: none; text-rendering: optimizeLegibility; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 0; }
 button, input, textarea { font: inherit; }
@@ -55,6 +57,8 @@ a { color: inherit; }
 .menu-button { display: none; }
 #conteudo-principal { min-height: 75vh; outline: none; }
 .app-shell:not(.immersive-shell) #conteudo-principal { padding: clamp(24px, 5vw, 70px); }
+.admin-shell .app-header,.admin-shell .app-footer{display:none}.admin-shell #conteudo-principal{padding:0!important}
+.portal-shell #conteudo-principal{padding:0!important}
 .app-footer { display: flex; align-items: center; justify-content: space-between; gap: 25px; padding: 40px 5%; color: #9a9eb4; background: #0a0b16; font-size: 11px; }
 .app-footer img { width: 135px; height: auto; display: block; }
 .app-footer span { font: 10px var(--font-mono); }

@@ -2,13 +2,14 @@
   <div class="home-page">
     <GhostFibers :enabled="entered" :reduced="scene.reduced" />
     <GlowCursor :enabled="entered" :reduced="scene.reduced" />
-    <GooeyNav :enabled="entered" :reduced="scene.reduced" />
+    <GooeyNav :enabled="entered" :reduced="scene.reduced" :show-brand="!brandVisible" />
+    <LineSidebar v-if="entered" :items="progressSections" />
     <HoloViewport :enabled="entered" :reduced="scene.reduced" />
     <PixelEdges :enabled="entered" :reduced="scene.reduced" />
     <ImmersiveIntro @scene-change="scene = $event" />
 
     <!-- 2. Manifesto / Essência -->
-    <section id="sobre" aria-labelledby="manifesto-title" class="manifesto">
+    <section id="sobre" data-progress-section aria-labelledby="manifesto-title" class="manifesto">
       <div class="manifesto-copy"><p class="eyebrow">Além da tela / Sobre a Miniverso</p>
       <h2 id="manifesto-title">Pequeno no nome.<br /><span>Imenso nas possibilidades.</span></h2>
       <blockquote>
@@ -19,7 +20,7 @@
     </section>
 
     <!-- 3. Benefícios / Por que imersão -->
-    <section aria-labelledby="impacto-title" class="impacto">
+    <section id="impacto" data-progress-section aria-labelledby="impacto-title" class="impacto">
       <div class="section-heading">
         <p class="eyebrow">Por que imersão?</p>
         <h2 id="impacto-title">Experiências que fazem a ideia permanecer.</h2>
@@ -35,7 +36,7 @@
     </section>
 
     <!-- 4. Expertise / Nossos Serviços -->
-    <section aria-labelledby="expertise-title" class="expertise">
+    <section id="expertise" data-progress-section aria-labelledby="expertise-title" class="expertise">
       <h2 id="expertise-title">O que fazemos</h2>
       <div class="expertise-grid">
         <article v-for="(servico, index) in servicos" :key="index" class="expertise-card">
@@ -48,7 +49,7 @@
     </section>
 
     <!-- 5. Portfólio / Selected Works -->
-    <section id="portfolio" tabindex="-1" aria-labelledby="portfolio-title" class="portfolio">
+    <section id="portfolio" data-progress-section tabindex="-1" aria-labelledby="portfolio-title" class="portfolio">
       <div class="portfolio-header">
         <div><p class="eyebrow">Mundos que criamos / Portfólio</p><h2 id="portfolio-title">Ideias que saíram<br />da imaginação.</h2></div>
         <a href="https://miniversotech.base44.app/#projetos" target="_blank" rel="noopener noreferrer" class="ver-todos">Portfólio completo <span aria-hidden="true">↗</span><span class="sr-only"> (abre em outra aba)</span></a>
@@ -64,7 +65,7 @@
     </section>
 
     <!-- 6. Processo -->
-    <section aria-labelledby="processo-title" class="processo">
+    <section id="processo" data-progress-section aria-labelledby="processo-title" class="processo">
       <div class="section-heading">
         <p class="eyebrow">Do briefing ao lançamento</p>
         <h2 id="processo-title">Clareza em cada etapa do projeto.</h2>
@@ -81,18 +82,14 @@
     </section>
 
     <!-- 7. Social Proof / Clientes -->
-    <section aria-labelledby="clientes-title" class="clientes">
-      <h2 id="clientes-title">Quem já inova com a gente</h2>
-      <div v-if="clientes.length > 0" class="clientes-logos">
-        <span v-for="(cliente, index) in clientes" :key="index" class="logo-placeholder">
-          {{ cliente.nome }}
-        </span>
-      </div>
-      <p v-else class="empty-state">Marcas e parceiros que fazem parte dessa história em breve.</p>
+    <section id="atuacao" data-progress-section aria-labelledby="clientes-title" class="clientes">
+      <p class="eyebrow">Tecnologia com contexto</p>
+      <h2 id="clientes-title">Mundos para diferentes realidades.</h2>
+      <LogoLoop :items="areasAtendidas" />
     </section>
 
     <!-- 8. Call to Action / Contato -->
-    <section id="contato" aria-labelledby="cta-title" class="cta">
+    <section id="contato" data-progress-section aria-labelledby="cta-title" class="cta">
       <div class="contact-copy"><p class="eyebrow">Da sua ideia para uma nova dimensão</p><h2 id="cta-title">Vamos construir o próximo universo juntos?</h2>
       <p class="cta-note">Sua ideia merece um mundo próprio. Vamos conversar?</p>
       <button class="btn-contato" type="button" aria-haspopup="dialog" @click="contactBrief.open()">Conte sua ideia <span aria-hidden="true">↗</span></button>
@@ -104,7 +101,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import ImmersiveIntro from '../components/ImmersiveIntro.vue';
 import GhostFibers from '../components/GhostFibers.vue';
 import GlowCursor from '../components/GlowCursor.vue';
@@ -115,17 +112,34 @@ import HoloViewport from '../components/HoloViewport.vue';
 import PixelEdges from '../components/PixelEdges.vue';
 import WorldArtifact from '../components/WorldArtifact.vue';
 import ContactBrief from '../components/ContactBrief.vue';
+import LineSidebar from '../components/LineSidebar.vue';
+import LogoLoop from '../components/LogoLoop.vue';
+import { useProjectStore } from '../utils/projectStore.js';
 const contactBrief = ref(null);
 const scene = ref({ progress: 0, reduced: false });
 const entered = computed(() => scene.value.reduced || scene.value.progress >= .82);
+const brandVisible = ref(true);
+let brandObserver;
+
+onMounted(() => {
+  const brand = document.querySelector('.brand-handoff');
+  if (!brand) return;
+  brandObserver = new IntersectionObserver(([entry]) => {
+    brandVisible.value = entry.isIntersecting;
+  });
+  brandObserver.observe(brand);
+});
+
+onUnmounted(() => brandObserver?.disconnect());
 
 // Estado reativo: Projetos
 // Conteúdo e imagens da seleção pública da Miniverso. Detalhes permanecem no site atual.
-const projetos = ref([
-  { id: 'avati', titulo: 'Avati: Do zero a um milhão', categoria: '01 / Gamificação & ativação de marca', descricao: 'Uma trilha interativa em xilogravura.', url_imagem: '/images/avati.png', url: 'https://miniversotech.base44.app/projeto?id=avati-do-zero-a-um-milhao' },
-  { id: 'aliados', titulo: 'Aliados do Sucesso: Desafio SEBRAETEC', categoria: '02 / Realidade virtual', descricao: 'O “Show do Milhão” Empreendedor.', url_imagem: '/images/aliados.png', url: 'https://miniversotech.base44.app/projeto?id=aliados-do-sucesso-sebraetec' },
-  { id: 'reciclaverso', titulo: 'Reciclaverso', categoria: '03 / Realidade virtual & sustentabilidade', descricao: 'Uma imersão ecológica em um game show interativo e educativo.', url_imagem: '/images/reciclaverso.png', url: 'https://miniversotech.base44.app/projeto?id=reciclaverso' }
-]);
+const { projects: storedProjects } = useProjectStore();
+const projetos = computed(() => storedProjects.value.filter(project => project.publicado).map((project, index) => ({ ...project, categoria: `${String(index + 1).padStart(2, '0')} / ${project.categoria}` })));
+const progressSections = [
+  { id: 'sobre', label: 'Estúdio' }, { id: 'impacto', label: 'Impacto' }, { id: 'expertise', label: 'Criação' },
+  { id: 'portfolio', label: 'Projetos' }, { id: 'processo', label: 'Processo' }, { id: 'contato', label: 'Contato' }
+];
 
 // Estado reativo: Serviços (Expertise)
 const servicos = ref([
@@ -147,7 +161,12 @@ const etapas = ref([
 ]);
 
 // Estado reativo: Clientes
-const clientes = ref([]);
+const areasAtendidas = [
+  { label: 'Eventos', detail: 'Gamificação & presença' },
+  { label: 'Educação', detail: 'Aprendizado imersivo' },
+  { label: 'Indústria', detail: 'Simulação & segurança' },
+  { label: 'Cultura', detail: 'Memória & turismo 360°' }
+];
 </script>
 
 <style scoped>
@@ -188,6 +207,7 @@ h2 span { color: #a89bc5; }
 .project-link { display: inline-flex; gap: 28px; align-items: center; min-height: 44px; font-size: 11px; color: #d9daea; border-bottom: 1px solid #9d99b260; }
 .processo-lista { list-style: none; padding: 0; }
 .clientes h2 { font-size: clamp(30px,4vw,54px); }
+.clientes :deep(.logo-loop) { margin-top: 42px; }
 .empty-state { color: #beb4d4; margin: 30px 0 0; font-size: 14px; line-height: 1.7; max-width: 40rem; }
 .clientes-logos { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 36px; }
 .cta { text-align: center; }

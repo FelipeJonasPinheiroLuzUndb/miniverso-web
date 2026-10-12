@@ -5,6 +5,7 @@ import Home from './views/Home.vue';
 import Blog from './views/Blog.vue';
 import Login from './views/Login.vue';
 import Dashboard from './views/Dashboard.vue';
+import { hasAdminSession } from './utils/projectStore.js';
 
 const routes = [
   {
@@ -25,7 +26,8 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: Dashboard
+    component: Dashboard,
+    meta: { requiresAuth: true }
   }
 ];
 
@@ -38,6 +40,11 @@ const router = createRouter({
     if (to.hash) return { el: to.hash, top: 24, behavior: 'auto' };
     return { top: 0 };
   }
+});
+
+router.beforeEach((to) => {
+  if (to.meta.requiresAuth && !hasAdminSession()) return { name: 'Login', query: { redirect: to.fullPath } };
+  if (to.name === 'Login' && hasAdminSession()) return { name: 'Dashboard' };
 });
 
 export default router;
